@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gym Membership Tracker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --dark-color: #2c3e50;
+            --light-color: #f8f9fa;
+            --warning-color: #ffc107;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            max-width: 100%; 
+            margin: 0 auto; 
+            padding: 0;
+            background-color: #f5f7fa;
+            color: #333;
+            min-height: 100vh;
+        }
+        
+        .app-header {
+            background: linear-gradient(135deg, var(--dark-color), #1a2530);
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(to right, #f9d423, #ff4e50);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .container { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 15px; 
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            margin: 20px;
+        }
+        
+        h1 {
+            color: var(--dark-color);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        .progress-container {
+            margin: 25px 0;
+        }
+        
+        .progress-bar { 
+            height: 25px; 
+            background: #e0e0e0; 
+            border-radius: 12px; 
+            margin: 10px 0;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .progress { 
+            height: 100%; 
+            background: linear-gradient(to right, var(--secondary-color), #27ae60);
+            border-radius: 12px; 
+            width: 0%; 
+            transition: width 0.5s ease;
+            position: relative;
+        }
+        
+        .progress::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                to right, 
+                rgba(255,255,255,0.1) 0%, 
+                rgba(255,255,255,0.3) 50%, 
+                rgba(255,255,255,0.1) 100%
+            );
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: var(--light-color);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--dark-color);
+            margin: 5px 0;
+        }
+        
+        .alert { 
+            padding: 12px; 
+            background: #fff3cd; 
+            border-left: 4px solid var(--warning-color);
+            margin: 15px 0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .alert::before {
+            content: '⚠️';
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .history { 
+            margin-top: 25px; 
+            border-top: 1px solid #eee; 
+            padding-top: 15px; 
+        }
+        
+        button {
+            padding: 12px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            font-size: 16px;
+            flex: 1;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #27ae60;
+            transform: translateY(-2px);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        #payment-history {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        #payment-history li {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+        
+        #payment-history li:hover {
+            background-color: #f9f9f9;
+        }
+        
+        #payment-history li:last-child {
+            border-bottom: none;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .membership-title {
+            font-size: 1.3rem;
+            color: var(--dark-color);
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        /* Mobile responsiveness */
+        @media (max-width: 600px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+                border-radius: 10px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo-text {
+                font-size: 20px;
+            }
+            
+            .logo img {
+                height: 30px;
+            }
+        }
+        
+        /* Animation for showing results */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        #results {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <header class="app-header">
+        <div class="logo">
+            <img src="https://via.placeholder.com/40/2ecc71/ffffff?text=PF" alt="Prime Fitness Logo">
+            <div class="logo-text">PRIME FITNESS</div>
+        </div>
+        <div>Membership Tracker</div>
+    </header>
+    
+    <div class="container">
+        <h1>Gym Membership Tracker</h1>
+        
+        <div class="form-group">
+            <label for="start-date">Membership Start Date:</label>
+            <input type="date" id="start-date" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="monthly-cost">Monthly Cost ($):</label>
+            <input type="number" id="monthly-cost" step="0.01" min="0" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="membership-name">Membership Name (Optional):</label>
+            <input type="text" id="membership-name" placeholder="e.g., Premium Gym Membership">
+        </div>
+        
+        <div class="button-group">
+            <button class="btn-primary" onclick="saveMembership()">Save Membership</button>
+            <button class="btn-success" onclick="recordPayment()">Record Payment</button>
+            <button class="btn-danger" onclick="resetData()">Reset</button>
+        </div>
+        
+        <div id="results" class="hidden">
+            <h2 class="membership-title" id="membership-title"></h2>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <div>Current Cycle</div>
+                    <div class="stat-value"><span id="days-passed">0</span>/<span id="total-days">30</span> days</div>
+                </div>
+                <div class="stat-card">
+                    <div>Total Spent</div>
+                    <div class="stat-value">$<span id="total-spent">0</span></div>
+                </div>
+            </div>
+            
+            <div class="progress-container">
+                <div>Membership Progress</div>
+                <div class="progress-bar"><div class="progress" id="progress-bar"></div></div>
+                <div style="text-align: right; font-size: 0.9em;"><span id="progress-percent">0</span>% complete</div>
+            </div>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <div>Next Payment Due</div>
+                    <div class="stat-value"><span id="next-payment"></span></div>
+                    <div><span id="days-remaining"></span> days remaining</div>
+                </div>
+                <div class="stat-card">
+                    <div>Monthly Cost</div>
+                    <div class="stat-value">$<span id="display-monthly-cost">0</span></div>
+                </div>
+            </div>
+            
+            <div id="alert-message" class="alert hidden"></div>
+            
+            <div class="history">
+                <h3>Payment History</h3>
+                <ul id="payment-history"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load saved data when page loads
+        window.onload = function() {
+            const savedData = JSON.parse(localStorage.getItem('gymMembership'));
+            
+            if (savedData) {
+                document.getElementById('start-date').value = savedData.startDate;
+                document.getElementById('monthly-cost').value = savedData.monthlyCost;
+                if (savedData.membershipName) {
+                    document.getElementById('membership-name').value = savedData.membershipName;
+                }
+                updateDisplay();
+            }
+        };
+    
+        function saveMembership() {
+            const startDate = document.getElementById('start-date').value;
+            const monthlyCost = parseFloat(document.getElementById('monthly-cost').value);
+            const membershipName = document.getElementById('membership-name').value;
+            
+            if (!startDate || isNaN(monthlyCost)) {
+                alert('Please enter valid values for start date and monthly cost');
+                return;
+            }
+            
+            const membershipData = {
+                startDate: startDate,
+                monthlyCost: monthlyCost,
+                membershipName: membershipName,
+                paymentHistory: JSON.parse(localStorage.getItem('gymMembership'))?.paymentHistory || []
+            };
+            
+            localStorage.setItem('gymMembership', JSON.stringify(membershipData));
+            updateDisplay();
+            
+            // Show success feedback
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.classList.remove('hidden');
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function updateDisplay() {
+            const savedData = JSON.parse(localStorage.getItem('gymMembership'));
+            if (!savedData) return;
+            
+            const startDate = new Date(savedData.startDate);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Normalize time to midnight for accurate day counting
+            const monthlyCost = savedData.monthlyCost;
+            
+            // Calculate days in current cycle
+            const timeDiff = today - startDate;
+            const daysPassed = Math.floor(timeDiff / (1000 * 60 * 60 * 24)) % 30;
+            const daysRemaining = 30 - daysPassed;
+            const progress = (daysPassed / 30) * 100;
+            
+            // Calculate next payment date
+            const nextPayment = new Date(startDate);
+            const monthsPassed = Math.floor(timeDiff / (1000 * 60 * 60 * 24 * 30));
+            nextPayment.setMonth(nextPayment.getMonth() + monthsPassed + 1);
+            
+            // Calculate total spent (including partial month)
+            const totalSpent = (monthsPassed + (daysPassed/30)) * monthlyCost;
+            
+            // Update UI
+            document.getElementById('days-passed').textContent = daysPassed;
+            document.getElementById('total-days').textContent = 30;
+            document.getElementById('progress-bar').style.width = progress + '%';
+            document.getElementById('progress-percent').textContent = progress.toFixed(1);
+            document.getElementById('next-payment').textContent = nextPayment.toDateString();
+            document.getElementById('days-remaining').textContent = daysRemaining;
+            document.getElementById('total-spent').textContent = totalSpent.toFixed(2);
+            document.getElementById('display-monthly-cost').textContent = monthlyCost.toFixed(2);
+            
+            // Set membership title
+            const title = savedData.membershipName || 'Gym Membership';
+            document.getElementById('membership-title').textContent = title;
+            
+            // Show alert if renewal is coming up
+            const alertDiv = document.getElementById('alert-message');
+            if (daysRemaining <= 7) {
+                alertDiv.textContent = `Renewal due in ${daysRemaining} day${daysRemaining === 1 ? '' : 's'}!`;
+                alertDiv.classList.remove('hidden');
+            } else {
+                alertDiv.classList.add('hidden');
+            }
+            
+            // Show payment history
+            const historyList = document.getElementById('payment-history');
+            historyList.innerHTML = '';
+            
+            if (savedData.paymentHistory && savedData.paymentHistory.length > 0) {
+                savedData.paymentHistory.forEach(payment => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <span>${payment.date}</span>
+                        <span>$${parseFloat(payment.amount).toFixed(2)}</span>
+                    `;
+                    historyList.appendChild(li);
+                });
+            } else {
+                historyList.innerHTML = '<li>No payment history recorded yet</li>';
+            }
+            
+            document.getElementById('results').classList.remove('hidden');
+        }
+        
+        function resetData() {
+            if (confirm('Are you sure you want to reset all membership data? This cannot be undone.')) {
+                localStorage.removeItem('gymMembership');
+                document.getElementById('start-date').value = '';
+                document.getElementById('monthly-cost').value = '';
+                document.getElementById('membership-name').value = '';
+                document.getElementById('results').classList.add('hidden');
+            }
+        }
+        
+        function recordPayment() {
+            const savedData = JSON.parse(localStorage.getItem('gymMembership'));
+            if (!savedData) {
+                alert('Please set up your membership first');
+                return;
+            }
+            
+            const paymentAmount = parseFloat(prompt('Enter payment amount:', savedData.monthlyCost));
+            if (isNaN(paymentAmount)) {
+                return;
+            }
+            
+            savedData.paymentHistory = savedData.paymentHistory || [];
+            savedData.paymentHistory.unshift({
+                date: new Date().toISOString().split('T')[0],
+                amount: paymentAmount
+            });
+            
+            localStorage.setItem('gymMembership', JSON.stringify(savedData));
+            updateDisplay();
+            
+            // Show feedback
+            alert(`Payment of $${paymentAmount.toFixed(2)} recorded successfully!`);
+        }
+    </script>
+</body>
+</html>
