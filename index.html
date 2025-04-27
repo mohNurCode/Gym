@@ -1,526 +1,709 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Gym Membership Tracker</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prime Gym - Member Dashboard</title>
     <style>
         :root {
-            --primary-color: #3498db;
-            --secondary-color: #2ecc71;
-            --danger-color: #e74c3c;
-            --dark-color: #2c3e50;
-            --light-color: #f8f9fa;
-            --warning-color: #ffc107;
+            --prime-green: #00b894;
+            --prime-dark: #1a1a1a;
+            --prime-light: #f8f9fa;
+            --prime-accent: #ff7675;
+            --prime-gray: #636e72;
         }
         
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
         
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            max-width: 100%; 
-            margin: 0 auto; 
-            padding: 0;
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
             background-color: #f5f7fa;
-            color: #333;
-            min-height: 100vh;
+            color: var(--prime-dark);
         }
         
-        .app-header {
-            background: linear-gradient(135deg, var(--dark-color), #1a2530);
-            color: white;
-            padding: 15px 0;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 10;
+        /* Header */
+        .member-header {
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         
         .logo {
             display: flex;
             align-items: center;
-            justify-content: center;
-            margin-bottom: 10px;
+            gap: 10px;
         }
         
         .logo img {
             height: 40px;
-            margin-right: 10px;
         }
         
-        .logo-text {
-            font-size: 24px;
-            font-weight: bold;
-            background: linear-gradient(to right, #f9d423, #ff4e50);
+        .logo h1 {
+            font-weight: 700;
+            font-size: 22px;
+            background: linear-gradient(to right, var(--prime-green), #55efc4);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
         }
         
-        .container { 
-            background: white; 
-            padding: 20px; 
-            border-radius: 15px; 
-            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
-            margin: 20px;
-        }
-        
-        h1 {
-            color: var(--dark-color);
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--dark-color);
-        }
-        
-        input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border 0.3s;
-        }
-        
-        input:focus {
-            border-color: var(--primary-color);
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
-        }
-        
-        .progress-container {
-            margin: 25px 0;
-        }
-        
-        .progress-bar { 
-            height: 25px; 
-            background: #e0e0e0; 
-            border-radius: 12px; 
-            margin: 10px 0;
-            overflow: hidden;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-        }
-        
-        .progress { 
-            height: 100%; 
-            background: linear-gradient(to right, var(--secondary-color), #27ae60);
-            border-radius: 12px; 
-            width: 0%; 
-            transition: width 0.5s ease;
-            position: relative;
-        }
-        
-        .progress::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(
-                to right, 
-                rgba(255,255,255,0.1) 0%, 
-                rgba(255,255,255,0.3) 50%, 
-                rgba(255,255,255,0.1) 100%
-            );
-            background-size: 200% 100%;
-            animation: shimmer 2s infinite;
-        }
-        
-        @keyframes shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-        
-        .stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin: 20px 0;
-        }
-        
-        .stat-card {
-            background: var(--light-color);
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-        
-        .stat-value {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--dark-color);
-            margin: 5px 0;
-        }
-        
-        .alert { 
-            padding: 12px; 
-            background: #fff3cd; 
-            border-left: 4px solid var(--warning-color);
-            margin: 15px 0;
-            border-radius: 8px;
+        .member-actions {
             display: flex;
             align-items: center;
+            gap: 20px;
         }
         
-        .alert::before {
-            content: '⚠️';
-            margin-right: 10px;
-            font-size: 1.2rem;
+        .notification-icon {
+            position: relative;
+            font-size: 20px;
+            color: var(--prime-gray);
         }
         
-        .history { 
-            margin-top: 25px; 
-            border-top: 1px solid #eee; 
-            padding-top: 15px; 
-        }
-        
-        button {
-            padding: 12px 18px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.2s;
-            font-size: 16px;
-            flex: 1;
-        }
-        
-        .btn-primary {
-            background-color: var(--primary-color);
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--prime-accent);
             color: white;
-        }
-        
-        .btn-primary:hover {
-            background-color: #2980b9;
-            transform: translateY(-2px);
-        }
-        
-        .btn-danger {
-            background-color: var(--danger-color);
-            color: white;
-        }
-        
-        .btn-danger:hover {
-            background-color: #c0392b;
-            transform: translateY(-2px);
-        }
-        
-        .btn-success {
-            background-color: var(--secondary-color);
-            color: white;
-        }
-        
-        .btn-success:hover {
-            background-color: #27ae60;
-            transform: translateY(-2px);
-        }
-        
-        .button-group {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
             display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
             gap: 10px;
-            margin-top: 20px;
         }
         
-        #payment-history {
-            list-style-type: none;
-            padding: 0;
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--prime-green);
         }
         
-        #payment-history li {
-            padding: 12px;
-            border-bottom: 1px solid #eee;
+        /* Membership Status Bar */
+        .membership-bar {
+            background: white;
+            margin: 20px 30px;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: background 0.2s;
         }
         
-        #payment-history li:hover {
-            background-color: #f9f9f9;
+        .membership-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
         
-        #payment-history li:last-child {
-            border-bottom: none;
+        .membership-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(0,184,148,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--prime-green);
+            font-size: 20px;
         }
         
-        .hidden {
-            display: none;
+        .membership-text h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
         }
         
-        .membership-title {
-            font-size: 1.3rem;
-            color: var(--dark-color);
+        .membership-text p {
+            font-size: 14px;
+            color: var(--prime-gray);
+        }
+        
+        .countdown-box {
             text-align: center;
-            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: rgba(0,184,148,0.05);
+            border-radius: 8px;
+            border-left: 4px solid var(--prime-green);
+        }
+        
+        .countdown-title {
+            font-size: 12px;
+            color: var(--prime-gray);
+            margin-bottom: 5px;
+        }
+        
+        .countdown-days {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--prime-green);
+        }
+        
+        .payment-due {
+            text-align: center;
+        }
+        
+        .payment-title {
+            font-size: 12px;
+            color: var(--prime-gray);
+            margin-bottom: 5px;
+        }
+        
+        .payment-date {
+            font-size: 16px;
             font-weight: 600;
         }
         
-        /* Mobile responsiveness */
-        @media (max-width: 600px) {
-            .container {
-                margin: 10px;
-                padding: 15px;
-                border-radius: 10px;
+        .renew-btn {
+            padding: 10px 20px;
+            background: var(--prime-green);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .renew-btn:hover {
+            background: #00a884;
+            transform: translateY(-2px);
+        }
+        
+        /* Welcome Banner */
+        .welcome-banner {
+            background: linear-gradient(135deg, var(--prime-green), #55efc4);
+            color: white;
+            padding: 30px;
+            margin: 0 30px 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,184,148,0.3);
+        }
+        
+        .welcome-text h2 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .welcome-text p {
+            opacity: 0.9;
+        }
+        
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin: 0 30px 30px;
+        }
+        
+        .action-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+        
+        .action-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(0,184,148,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            color: var(--prime-green);
+            font-size: 20px;
+        }
+        
+        .action-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .action-desc {
+            font-size: 13px;
+            color: var(--prime-gray);
+        }
+        
+        /* Workout Section */
+        .content-section {
+            background: white;
+            border-radius: 12px;
+            margin: 0 30px 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+            overflow: hidden;
+        }
+        
+        .section-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid #f1f3f5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .view-all {
+            color: var(--prime-green);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .workout-plans {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        /* Stats Section */
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+        .workout-card {
+            border: 1px solid #f1f3f5;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .workout-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+        
+        .workout-image {
+            height: 120px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .workout-details {
+            padding: 15px;
+        }
+        
+        .workout-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .workout-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--prime-gray);
+            margin-bottom: 10px;
+        }
+        
+        .workout-desc {
+            font-size: 13px;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .start-btn {
+            width: 100%;
+            padding: 8px;
+            background: var(--prime-green);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .start-btn:hover {
+            background: #00a884;
+        }
+        
+        /* Stats Section */
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+        }
+        
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .stat-title {
+            font-size: 14px;
+            color: var(--prime-gray);
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .stat-change {
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .stat-change.up {
+            color: var(--prime-green);
+        }
+        
+        .stat-change.down {
+            color: var(--prime-accent);
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: #f1f3f5;
+            border-radius: 3px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--prime-green);
+            border-radius: 3px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .quick-actions, .workout-plans, .stats-cards {
+                grid-template-columns: repeat(2, 1fr);
             }
-            
-            .button-group {
-                flex-direction: column;
-            }
-            
-            .stats {
+        }
+        
+        @media (max-width: 768px) {
+            .quick-actions, .workout-plans, .stats-cards {
                 grid-template-columns: 1fr;
             }
             
-            .logo-text {
-                font-size: 20px;
+            .membership-bar {
+                flex-direction: column;
+                gap: 20px;
+                align-items: flex-start;
             }
             
-            .logo img {
-                height: 30px;
+            .member-header {
+                padding: 15px 20px;
             }
-        }
-        
-        /* Animation for showing results */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        #results {
-            animation: fadeIn 0.5s ease-out;
+            
+            .content-section, .welcome-banner, .quick-actions {
+                margin-left: 15px;
+                margin-right: 15px;
+            }
         }
     </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <header class="app-header">
+    <!-- Header -->
+    <header class="member-header">
         <div class="logo">
-            <img src="https://via.placeholder.com/40/2ecc71/ffffff?text=PF" alt="Prime Fitness Logo">
-            <div class="logo-text">PRIME FITNESS</div>
+        <div class="logo">
+                <h2><i class="fas fa-dumbbell"></i> PRIME GYM</h2>
+            </div>
         </div>
-        <div>Membership Tracker</div>
+        
+        <div class="member-actions">
+            <div class="notification-icon">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            <div class="user-profile">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" class="user-avatar">
+                <span>Sarah Johnson</span>
+            </div>
+        </div>
     </header>
-    
-    <div class="container">
-        <h1>Gym Membership Tracker</h1>
-        
-        <div class="form-group">
-            <label for="start-date">Membership Start Date:</label>
-            <input type="date" id="start-date" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="monthly-cost">Monthly Cost ($):</label>
-            <input type="number" id="monthly-cost" step="0.01" min="0" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="membership-name">Membership Name (Optional):</label>
-            <input type="text" id="membership-name" placeholder="e.g., Premium Gym Membership">
-        </div>
-        
-        <div class="button-group">
-            <button class="btn-primary" onclick="saveMembership()">Save Membership</button>
-            <button class="btn-success" onclick="recordPayment()">Record Payment</button>
-            <button class="btn-danger" onclick="resetData()">Reset</button>
-        </div>
-        
-        <div id="results" class="hidden">
-            <h2 class="membership-title" id="membership-title"></h2>
-            
-            <div class="stats">
-                <div class="stat-card">
-                    <div>Current Cycle</div>
-                    <div class="stat-value"><span id="days-passed">0</span>/<span id="total-days">30</span> days</div>
-                </div>
-                <div class="stat-card">
-                    <div>Total Spent</div>
-                    <div class="stat-value">$<span id="total-spent">0</span></div>
-                </div>
+    <!-- Membership Status Bar -->
+    <div class="membership-bar">
+        <div class="membership-info">
+            <div class="membership-icon">
+                <i class="fas fa-medal"></i>
             </div>
-            
-            <div class="progress-container">
-                <div>Membership Progress</div>
-                <div class="progress-bar"><div class="progress" id="progress-bar"></div></div>
-                <div style="text-align: right; font-size: 0.9em;"><span id="progress-percent">0</span>% complete</div>
-            </div>
-            
-            <div class="stats">
-                <div class="stat-card">
-                    <div>Next Payment Due</div>
-                    <div class="stat-value"><span id="next-payment"></span></div>
-                    <div><span id="days-remaining"></span> days remaining</div>
-                </div>
-                <div class="stat-card">
-                    <div>Monthly Cost</div>
-                    <div class="stat-value">$<span id="display-monthly-cost">0</span></div>
-                </div>
-            </div>
-            
-            <div id="alert-message" class="alert hidden"></div>
-            
-            <div class="history">
-                <h3>Payment History</h3>
-                <ul id="payment-history"></ul>
+            <div class="membership-text">
+                <h3>Premium Membership</h3>
+                <p>Active since January 15, 2024</p>
             </div>
         </div>
+        
+        <div class="countdown-box">
+            <div class="countdown-title">Days Remaining</div>
+            <div class="countdown-days" id="daysRemaining">12</div>
+        </div>
+        
+        <div class="payment-due">
+            <div class="payment-title">Next Payment Due</div>
+            <div class="payment-date" id="nextPaymentDate">June 28, 2024</div>
+        </div>
+        
+        <button class="renew-btn">
+            <i class="fas fa-sync-alt"></i> Renew Now
+        </button>
     </div>
 
-    <script>
-        // Load saved data when page loads
-        window.onload = function() {
-            const savedData = JSON.parse(localStorage.getItem('gymMembership'));
-            
-            if (savedData) {
-                document.getElementById('start-date').value = savedData.startDate;
-                document.getElementById('monthly-cost').value = savedData.monthlyCost;
-                if (savedData.membershipName) {
-                    document.getElementById('membership-name').value = savedData.membershipName;
-                }
-                updateDisplay();
-            }
-        };
+    <!-- Welcome Banner -->
+  <!-- Welcome Banner -->
+  <section class="welcome-banner">
+        <div class="welcome-text">
+            <h2>Welcome back, Sarah!</h2>
+            <p>You've completed 3 workouts this week - keep up the great work!</p>
+        </div>
+    </section>
     
-        function saveMembership() {
-            const startDate = document.getElementById('start-date').value;
-            const monthlyCost = parseFloat(document.getElementById('monthly-cost').value);
-            const membershipName = document.getElementById('membership-name').value;
-            
-            if (!startDate || isNaN(monthlyCost)) {
-                alert('Please enter valid values for start date and monthly cost');
-                return;
-            }
-            
-            const membershipData = {
-                startDate: startDate,
-                monthlyCost: monthlyCost,
-                membershipName: membershipName,
-                paymentHistory: JSON.parse(localStorage.getItem('gymMembership'))?.paymentHistory || []
-            };
-            
-            localStorage.setItem('gymMembership', JSON.stringify(membershipData));
-            updateDisplay();
-            
-            // Show success feedback
-            const resultsDiv = document.getElementById('results');
-            resultsDiv.classList.remove('hidden');
-            resultsDiv.scrollIntoView({ behavior: 'smooth' });
-        }
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+        <div class="action-card">
+            <div class="action-icon">
+                <i class="fas fa-calendar-alt"></i>
+            </div>
+            <h3 class="action-title">Book a Class</h3>
+            <p class="action-desc">Schedule your next workout session</p>
+        </div>
         
-        function updateDisplay() {
-            const savedData = JSON.parse(localStorage.getItem('gymMembership'));
-            if (!savedData) return;
+        <div class="action-card">
+            <div class="action-icon">
+                <i class="fas fa-dumbbell"></i>
+            </div>
+            <h3 class="action-title">My Workouts</h3>
+            <p class="action-desc">View your training programs</p>
+        </div>
+        
+        <div class="action-card">
+            <div class="action-icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <h3 class="action-title">Progress</h3>
+            <p class="action-desc">Track your fitness journey</p>
+        </div>
+        
+        <div class="action-card">
+            <div class="action-icon">
+                <i class="fas fa-user-tie"></i>
+            </div>
+            <h3 class="action-title">My Trainer</h3>
+            <p class="action-desc">Connect with your coach</p>
+        </div>
+    </div>
+    
+    <!-- Workout Plans -->
+    <section class="content-section">
+        <div class="section-header">
+            <h2 class="section-title">Recommended Workouts</h2>
+            <span class="view-all">View All</span>
+        </div>
+        
+        <div class="workout-plans">
+            <div class="workout-card">
+                <div class="workout-image" style="background-image: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80');"></div>
+                <div class="workout-details">
+                    <h3 class="workout-title">Full Body Burn</h3>
+                    <div class="workout-meta">
+                        <span><i class="fas fa-clock"></i> 45 mins</span>
+                        <span><i class="fas fa-fire"></i> 320 kcal</span>
+                    </div>
+                    <p class="workout-desc">High-intensity workout targeting all major muscle groups for maximum calorie burn.</p>
+                    <button class="start-btn">Start Workout</button>
+                </div>
+            </div>
             
-            const startDate = new Date(savedData.startDate);
+            <div class="workout-card">
+                <div class="workout-image" style="background-image: url('https://images.unsplash.com/photo-1538805060514-97d9cc17730c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80');"></div>
+                <div class="workout-details">
+                    <h3 class="workout-title">Core Strength</h3>
+                    <div class="workout-meta">
+                        <span><i class="fas fa-clock"></i> 30 mins</span>
+                        <span><i class="fas fa-fire"></i> 220 kcal</span>
+                    </div>
+                    <p class="workout-desc">Build a strong core with these targeted ab exercises and stability movements.</p>
+                    <button class="start-btn">Start Workout</button>
+                </div>
+            </div>
+            
+            <div class="workout-card">
+                <div class="workout-image" style="background-image: url('https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80');"></div>
+                <div class="workout-details">
+                    <h3 class="workout-title">Upper Body Sculpt</h3>
+                    <div class="workout-meta">
+                        <span><i class="fas fa-clock"></i> 50 mins</span>
+                        <span><i class="fas fa-fire"></i> 280 kcal</span>
+                    </div>
+                    <p class="workout-desc">Focus on arms, shoulders and back with these muscle-defining exercises.</p>
+                    <button class="start-btn">Start Workout</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Stats Section -->
+    <section class="content-section">
+        <div class="section-header">
+            <h2 class="section-title">Your Fitness Stats</h2>
+            <span class="view-all">View History</span>
+        </div>
+        
+        <div class="stats-cards">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Weekly Visits</div>
+                    <i class="fas fa-running" style="color: var(--prime-green);"></i>
+                </div>
+                <div class="stat-value">4</div>
+                <div class="stat-change up">
+                    <i class="fas fa-arrow-up"></i> 33% from last week
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 80%;"></div>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Calories Burned</div>
+                    <i class="fas fa-fire" style="color: var(--prime-accent);"></i>
+                </div>
+                <div class="stat-value">1,840</div>
+                <div class="stat-change up">
+                    <i class="fas fa-arrow-up"></i> 15% from last week
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 65%;"></div>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-title">Workout Streak</div>
+                    <i class="fas fa-bolt" style="color: #f8a54a;"></i>
+                </div>
+                <div class="stat-value">7 days</div>
+                <div class="stat-change down">
+                    <i class="fas fa-arrow-down"></i> 2 days less than last month
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 45%;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <script>
+          // Calculate days remaining and next payment date
+          function updateMembershipDates() {
+            // Set your membership end date (YYYY-MM-DD format)
+            const endDate = new Date('2024-06-28');
             const today = new Date();
-            today.setHours(0, 0, 0, 0); // Normalize time to midnight for accurate day counting
-            const monthlyCost = savedData.monthlyCost;
             
-            // Calculate days in current cycle
-            const timeDiff = today - startDate;
-            const daysPassed = Math.floor(timeDiff / (1000 * 60 * 60 * 24)) % 30;
-            const daysRemaining = 30 - daysPassed;
-            const progress = (daysPassed / 30) * 100;
+            // Calculate days remaining
+            const timeDiff = endDate - today;
+            const daysRemaining = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
             
-            // Calculate next payment date
-            const nextPayment = new Date(startDate);
-            const monthsPassed = Math.floor(timeDiff / (1000 * 60 * 60 * 24 * 30));
-            nextPayment.setMonth(nextPayment.getMonth() + monthsPassed + 1);
+            // Update the display
+            document.getElementById('daysRemaining').textContent = daysRemaining;
             
-            // Calculate total spent (including partial month)
-            const totalSpent = (monthsPassed + (daysPassed/30)) * monthlyCost;
-            
-            // Update UI
-            document.getElementById('days-passed').textContent = daysPassed;
-            document.getElementById('total-days').textContent = 30;
-            document.getElementById('progress-bar').style.width = progress + '%';
-            document.getElementById('progress-percent').textContent = progress.toFixed(1);
-            document.getElementById('next-payment').textContent = nextPayment.toDateString();
-            document.getElementById('days-remaining').textContent = daysRemaining;
-            document.getElementById('total-spent').textContent = totalSpent.toFixed(2);
-            document.getElementById('display-monthly-cost').textContent = monthlyCost.toFixed(2);
-            
-            // Set membership title
-            const title = savedData.membershipName || 'Gym Membership';
-            document.getElementById('membership-title').textContent = title;
-            
-            // Show alert if renewal is coming up
-            const alertDiv = document.getElementById('alert-message');
+            // Style based on days remaining
+            const daysElement = document.getElementById('daysRemaining');
             if (daysRemaining <= 7) {
-                alertDiv.textContent = `Renewal due in ${daysRemaining} day${daysRemaining === 1 ? '' : 's'}!`;
-                alertDiv.classList.remove('hidden');
+                daysElement.style.color = 'var(--prime-accent)';
             } else {
-                alertDiv.classList.add('hidden');
+                daysElement.style.color = 'var(--prime-green)';
             }
             
-            // Show payment history
-            const historyList = document.getElementById('payment-history');
-            historyList.innerHTML = '';
+            // Calculate next payment date (30 days from today)
+            const nextPaymentDate = new Date();
+            nextPaymentDate.setDate(today.getDate() + 30);
             
-            if (savedData.paymentHistory && savedData.paymentHistory.length > 0) {
-                savedData.paymentHistory.forEach(payment => {
-                    const li = document.createElement('li');
-                    li.innerHTML = `
-                        <span>${payment.date}</span>
-                        <span>$${parseFloat(payment.amount).toFixed(2)}</span>
-                    `;
-                    historyList.appendChild(li);
-                });
-            } else {
-                historyList.innerHTML = '<li>No payment history recorded yet</li>';
-            }
-            
-            document.getElementById('results').classList.remove('hidden');
+            // Format as "Month Day, Year"
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('nextPaymentDate').textContent = 
+                nextPaymentDate.toLocaleDateString('en-US', options);
         }
         
-        function resetData() {
-            if (confirm('Are you sure you want to reset all membership data? This cannot be undone.')) {
-                localStorage.removeItem('gymMembership');
-                document.getElementById('start-date').value = '';
-                document.getElementById('monthly-cost').value = '';
-                document.getElementById('membership-name').value = '';
-                document.getElementById('results').classList.add('hidden');
-            }
-        }
+        // Initialize
+        updateMembershipDates();
         
-        function recordPayment() {
-            const savedData = JSON.parse(localStorage.getItem('gymMembership'));
-            if (!savedData) {
-                alert('Please set up your membership first');
-                return;
-            }
-            
-            const paymentAmount = parseFloat(prompt('Enter payment amount:', savedData.monthlyCost));
-            if (isNaN(paymentAmount)) {
-                return;
-            }
-            
-            savedData.paymentHistory = savedData.paymentHistory || [];
-            savedData.paymentHistory.unshift({
-                date: new Date().toISOString().split('T')[0],
-                amount: paymentAmount
+        // Simple interactivity
+        document.querySelector('.renew-btn').addEventListener('click', function() {
+            alert('Redirecting to membership renewal page...');
+        });
+        // Simple interactivity
+        document.querySelectorAll('.action-card, .workout-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                if (!e.target.classList.contains('start-btn')) {
+                    // Navigate to appropriate section
+                    const title = this.querySelector('.action-title, .workout-title').textContent;
+                    alert(`Navigating to ${title} section`);
+                }
             });
-            
-            localStorage.setItem('gymMembership', JSON.stringify(savedData));
-            updateDisplay();
-            
-            // Show feedback
-            alert(`Payment of $${paymentAmount.toFixed(2)} recorded successfully!`);
-        }
+        });
+        
+        document.querySelectorAll('.start-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const workout = this.closest('.workout-card').querySelector('.workout-title').textContent;
+                alert(`Starting "${workout}" session!`);
+            });
+        });
+        
+        document.querySelectorAll('.view-all').forEach(link => {
+            link.addEventListener('click', function() {
+                const section = this.closest('.content-section').querySelector('.section-title').textContent;
+                alert(`Viewing all ${section}`);
+            });
+        });
     </script>
 </body>
 </html>
