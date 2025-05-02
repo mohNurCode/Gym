@@ -3,7 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prime Gym - Member Dashboard</title>
+    <meta name="description" content="Prime Gym member dashboard - Track your workouts, membership status, fitness progress, and book classes with our premium gym management system.">
+    <meta name="keywords" content="gym membership, fitness tracker, workout plans, personal training, gym dashboard">
+    <meta name="author" content="Prime Gym">
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Prime Gym - Member Dashboard">
+    <meta property="og:description" content="Your personalized fitness dashboard to track workouts, progress, and membership with Prime Gym.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.primegym.com/member-dashboard">
+    <meta property="og:image" content="https://www.primegym.com/images/dashboard-preview.jpg">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Prime Gym - Member Dashboard">
+    <meta name="twitter:description" content="Your personalized fitness dashboard to track workouts, progress, and membership with Prime Gym.">
+    <meta name="twitter:image" content="https://www.primegym.com/images/dashboard-preview.jpg">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.primegym.com/member-dashboard">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    
+    <title>Prime Gym - Member Dashboard | Track Workouts & Membership</title>
     <style>
         :root {
             --prime-green: #00b894;
@@ -25,6 +49,7 @@
         body {
             background-color: #f5f7fa;
             color: var(--prime-dark);
+            line-height: 1.6;
         }
         
         /* Header */
@@ -43,10 +68,6 @@
             gap: 10px;
         }
         
-        .logo img {
-            height: 40px;
-        }
-        
         .logo h1 {
             font-weight: 700;
             font-size: 22px;
@@ -54,6 +75,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: 1px;
+            margin: 0;
         }
         
         .member-actions {
@@ -96,6 +118,39 @@
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid var(--prime-green);
+        }
+        
+        /* Breadcrumbs */
+        .breadcrumbs {
+            padding: 15px 30px;
+            font-size: 14px;
+        }
+        
+        .breadcrumbs ol {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .breadcrumbs li {
+            margin-right: 10px;
+        }
+        
+        .breadcrumbs li:not(:last-child):after {
+            content: "›";
+            margin-left: 10px;
+            color: var(--prime-gray);
+        }
+        
+        .breadcrumbs a {
+            color: var(--prime-green);
+            text-decoration: none;
+        }
+        
+        .breadcrumbs [aria-current="page"] {
+            color: var(--prime-dark);
+            font-weight: 500;
         }
         
         /* Membership Status Bar */
@@ -224,6 +279,8 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.03);
             transition: all 0.3s;
             cursor: pointer;
+            text-decoration: none;
+            color: inherit;
         }
         
         .action-card:hover {
@@ -281,6 +338,7 @@
             font-size: 14px;
             font-weight: 500;
             cursor: pointer;
+            text-decoration: none;
         }
         
         .workout-plans {
@@ -439,40 +497,76 @@
                 padding: 15px 20px;
             }
             
-            .content-section, .welcome-banner, .quick-actions {
+            .content-section, .welcome-banner, .quick-actions, .breadcrumbs {
                 margin-left: 15px;
                 margin-right: 15px;
             }
         }
     </style>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Prime Gym Member Dashboard",
+      "description": "Personalized fitness dashboard for Prime Gym members to track workouts, progress, and membership status.",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "name": "Premium Gym Membership",
+        "price": "79.99",
+        "priceCurrency": "USD"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Prime Gym",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.primegym.com/logo.png",
+          "width": "200",
+          "height": "60"
+        }
+      }
+    }
+    </script>
 </head>
 <body>
     <!-- Header -->
     <header class="member-header">
         <div class="logo">
-        <div class="logo">
-                <h2><i class="fas fa-dumbbell"></i> PRIME GYM</h2>
-            </div>
+            <h1><i class="fas fa-dumbbell" aria-hidden="true"></i> PRIME GYM</h1>
         </div>
         
         <div class="member-actions">
             <div class="notification-icon">
-                <i class="fas fa-bell"></i>
+                <i class="fas fa-bell" aria-hidden="true"></i>
                 <span class="notification-badge">3</span>
             </div>
             <div class="user-profile">
-                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" class="user-avatar">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profile photo of Sarah Johnson" class="user-avatar" loading="lazy">
                 <span>Sarah Johnson</span>
             </div>
         </div>
     </header>
+    
+    <!-- Breadcrumbs -->
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <ol>
+            <li><a href="https://www.primegym.com">Home</a></li>
+            <li><a href="https://www.primegym.com/member-area">Member Area</a></li>
+            <li aria-current="page">Dashboard</li>
+        </ol>
+    </nav>
+    
     <!-- Membership Status Bar -->
-    <div class="membership-bar">
+    <section class="membership-bar" aria-label="Membership status">
         <div class="membership-info">
             <div class="membership-icon">
-                <i class="fas fa-medal"></i>
+                <i class="fas fa-medal" aria-hidden="true"></i>
             </div>
             <div class="membership-text">
                 <h3>Premium Membership</h3>
@@ -490,14 +584,13 @@
             <div class="payment-date" id="nextPaymentDate">June 28, 2024</div>
         </div>
         
-        <button class="renew-btn">
-            <i class="fas fa-sync-alt"></i> Renew Now
+        <button class="renew-btn" aria-label="Renew your membership">
+            <i class="fas fa-sync-alt" aria-hidden="true"></i> Renew Now
         </button>
-    </div>
+    </section>
 
     <!-- Welcome Banner -->
-  <!-- Welcome Banner -->
-  <section class="welcome-banner">
+    <section class="welcome-banner" aria-label="Welcome message">
         <div class="welcome-text">
             <h2>Welcome back, Sarah!</h2>
             <p>You've completed 3 workouts this week - keep up the great work!</p>
@@ -505,55 +598,55 @@
     </section>
     
     <!-- Quick Actions -->
-    <div class="quick-actions">
-        <div class="action-card">
+    <nav class="quick-actions" aria-label="Quick navigation">
+        <a href="/book-class" class="action-card">
             <div class="action-icon">
-                <i class="fas fa-calendar-alt"></i>
+                <i class="fas fa-calendar-alt" aria-hidden="true"></i>
             </div>
             <h3 class="action-title">Book a Class</h3>
             <p class="action-desc">Schedule your next workout session</p>
-        </div>
+        </a>
         
-        <div class="action-card">
+        <a href="/my-workouts" class="action-card">
             <div class="action-icon">
-                <i class="fas fa-dumbbell"></i>
+                <i class="fas fa-dumbbell" aria-hidden="true"></i>
             </div>
             <h3 class="action-title">My Workouts</h3>
             <p class="action-desc">View your training programs</p>
-        </div>
+        </a>
         
-        <div class="action-card">
+        <a href="/progress" class="action-card">
             <div class="action-icon">
-                <i class="fas fa-chart-line"></i>
+                <i class="fas fa-chart-line" aria-hidden="true"></i>
             </div>
             <h3 class="action-title">Progress</h3>
             <p class="action-desc">Track your fitness journey</p>
-        </div>
+        </a>
         
-        <div class="action-card">
+        <a href="/my-trainer" class="action-card">
             <div class="action-icon">
-                <i class="fas fa-user-tie"></i>
+                <i class="fas fa-user-tie" aria-hidden="true"></i>
             </div>
             <h3 class="action-title">My Trainer</h3>
             <p class="action-desc">Connect with your coach</p>
-        </div>
-    </div>
+        </a>
+    </nav>
     
     <!-- Workout Plans -->
-    <section class="content-section">
+    <section class="content-section" aria-labelledby="workout-plans-heading">
         <div class="section-header">
-            <h2 class="section-title">Recommended Workouts</h2>
-            <span class="view-all">View All</span>
+            <h2 id="workout-plans-heading" class="section-title">Recommended Workouts</h2>
+            <a href="/workouts" class="view-all">View All</a>
         </div>
         
         <div class="workout-plans">
             <div class="workout-card">
-                <div class="workout-image" style="background-image: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80');"></div>
+                <div class="workout-image" style="background-image: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80');" role="img" aria-label="People doing full body workout"></div>
                 <div class="workout-details">
                     <h3 class="workout-title">Full Body Burn</h3>
                     <div class="workout-meta">
-                        <span><i class="fas fa-clock"></i> 45 mins</span>
-                        <span><i class="fas fa-fire"></i> 320 kcal</span>
+                        <span><i class="fas fa-clock" aria-hidden="true"></i> 45 mins</span>
+                        <span><i class="fas fa-fire" aria-hidden="true"></i> 320 kcal</span>
                     </div>
                     <p class="workout-desc">High-intensity workout targeting all major muscle groups for maximum calorie burn.</p>
                     <button class="start-btn">Start Workout</button>
@@ -561,12 +654,12 @@
             </div>
             
             <div class="workout-card">
-                <div class="workout-image" style="background-image: url('https://images.unsplash.com/photo-1538805060514-97d9cc17730c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80');"></div>
+                <div class="workout-image" style="background-image: url('https://images.unsplash.com/photo-1538805060514-97d9cc17730c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80');" role="img" aria-label="Person doing core exercises"></div>
                 <div class="workout-details">
                     <h3 class="workout-title">Core Strength</h3>
                     <div class="workout-meta">
-                        <span><i class="fas fa-clock"></i> 30 mins</span>
-                        <span><i class="fas fa-fire"></i> 220 kcal</span>
+                        <span><i class="fas fa-clock" aria-hidden="true"></i> 30 mins</span>
+                        <span><i class="fas fa-fire" aria-hidden="true"></i> 220 kcal</span>
                     </div>
                     <p class="workout-desc">Build a strong core with these targeted ab exercises and stability movements.</p>
                     <button class="start-btn">Start Workout</button>
@@ -574,12 +667,12 @@
             </div>
             
             <div class="workout-card">
-                <div class="workout-image" style="background-image: url('https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80');"></div>
+                <div class="workout-image" style="background-image: url('https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80');" role="img" aria-label="Person doing upper body workout"></div>
                 <div class="workout-details">
                     <h3 class="workout-title">Upper Body Sculpt</h3>
                     <div class="workout-meta">
-                        <span><i class="fas fa-clock"></i> 50 mins</span>
-                        <span><i class="fas fa-fire"></i> 280 kcal</span>
+                        <span><i class="fas fa-clock" aria-hidden="true"></i> 50 mins</span>
+                        <span><i class="fas fa-fire" aria-hidden="true"></i> 280 kcal</span>
                     </div>
                     <p class="workout-desc">Focus on arms, shoulders and back with these muscle-defining exercises.</p>
                     <button class="start-btn">Start Workout</button>
@@ -589,21 +682,21 @@
     </section>
     
     <!-- Stats Section -->
-    <section class="content-section">
+    <section class="content-section" aria-labelledby="fitness-stats-heading">
         <div class="section-header">
-            <h2 class="section-title">Your Fitness Stats</h2>
-            <span class="view-all">View History</span>
+            <h2 id="fitness-stats-heading" class="section-title">Your Fitness Stats</h2>
+            <a href="/stats" class="view-all">View History</a>
         </div>
         
         <div class="stats-cards">
             <div class="stat-card">
                 <div class="stat-header">
                     <div class="stat-title">Weekly Visits</div>
-                    <i class="fas fa-running" style="color: var(--prime-green);"></i>
+                    <i class="fas fa-running" style="color: var(--prime-green);" aria-hidden="true"></i>
                 </div>
                 <div class="stat-value">4</div>
                 <div class="stat-change up">
-                    <i class="fas fa-arrow-up"></i> 33% from last week
+                    <i class="fas fa-arrow-up" aria-hidden="true"></i> 33% from last week
                 </div>
                 <div class="progress-bar">
                     <div class="progress-fill" style="width: 80%;"></div>
@@ -613,11 +706,11 @@
             <div class="stat-card">
                 <div class="stat-header">
                     <div class="stat-title">Calories Burned</div>
-                    <i class="fas fa-fire" style="color: var(--prime-accent);"></i>
+                    <i class="fas fa-fire" style="color: var(--prime-accent);" aria-hidden="true"></i>
                 </div>
                 <div class="stat-value">1,840</div>
                 <div class="stat-change up">
-                    <i class="fas fa-arrow-up"></i> 15% from last week
+                    <i class="fas fa-arrow-up" aria-hidden="true"></i> 15% from last week
                 </div>
                 <div class="progress-bar">
                     <div class="progress-fill" style="width: 65%;"></div>
@@ -627,11 +720,11 @@
             <div class="stat-card">
                 <div class="stat-header">
                     <div class="stat-title">Workout Streak</div>
-                    <i class="fas fa-bolt" style="color: #f8a54a;"></i>
+                    <i class="fas fa-bolt" style="color: #f8a54a;" aria-hidden="true"></i>
                 </div>
                 <div class="stat-value">7 days</div>
                 <div class="stat-change down">
-                    <i class="fas fa-arrow-down"></i> 2 days less than last month
+                    <i class="fas fa-arrow-down" aria-hidden="true"></i> 2 days less than last month
                 </div>
                 <div class="progress-bar">
                     <div class="progress-fill" style="width: 45%;"></div>
@@ -641,8 +734,8 @@
     </section>
     
     <script>
-          // Calculate days remaining and next payment date
-          function updateMembershipDates() {
+        // Calculate days remaining and next payment date
+        function updateMembershipDates() {
             // Set your membership end date (YYYY-MM-DD format)
             const endDate = new Date('2024-06-28');
             const today = new Date();
@@ -679,29 +772,12 @@
         document.querySelector('.renew-btn').addEventListener('click', function() {
             alert('Redirecting to membership renewal page...');
         });
-        // Simple interactivity
-        document.querySelectorAll('.action-card, .workout-card').forEach(card => {
-            card.addEventListener('click', function(e) {
-                if (!e.target.classList.contains('start-btn')) {
-                    // Navigate to appropriate section
-                    const title = this.querySelector('.action-title, .workout-title').textContent;
-                    alert(`Navigating to ${title} section`);
-                }
-            });
-        });
         
         document.querySelectorAll('.start-btn').forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.stopPropagation();
                 const workout = this.closest('.workout-card').querySelector('.workout-title').textContent;
                 alert(`Starting "${workout}" session!`);
-            });
-        });
-        
-        document.querySelectorAll('.view-all').forEach(link => {
-            link.addEventListener('click', function() {
-                const section = this.closest('.content-section').querySelector('.section-title').textContent;
-                alert(`Viewing all ${section}`);
             });
         });
     </script>
